@@ -7,8 +7,9 @@ const Person = require('./models/person')
 app.use(express.json())
 app.use(express.static('build'))
 
+// eslint-disable-next-line no-undef
 morgan.token('data', getid = (request) => {
-	return JSON.stringify(request.body)
+  return JSON.stringify(request.body)
 })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
@@ -26,19 +27,19 @@ app.get('/api/persons', (request, response) => {
 
 app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
-  .then(person => {
-    if (person) {
-      response.json(person)
-    } else {
-      response.status(404).end()
-    }
-  })
-  .catch(error => next(error))
+    .then(person => {
+      if (person) {
+        response.json(person)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -67,12 +68,12 @@ app.put('/api/persons/:id', (request, response, next) => {
 })
 
 app.post('/api/persons', (request, response, next) => {
-	const body = request.body
+  const body = request.body
 
-	const person = new Person({
-		name: body.name,
-		number: body.number,
-	})
+  const person = new Person({
+    name: body.name,
+    number: body.number,
+  })
 
   person.save()
     .then(savedPerson => {
